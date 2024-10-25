@@ -16,6 +16,9 @@ public class ShoppingModel {
 
     private Double total;
 
+    @OneToMany(mappedBy = "idShopping")
+    private ShoppingProductModel idShoppingProduct;
+
     // Getters e Setter
     public Long getIdShopping() {
         return idShopping;
@@ -39,5 +42,13 @@ public class ShoppingModel {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public ShoppingProductModel getIdShoppingProduct() {
+        return idShoppingProduct;
+    }
+
+    public void setIdShoppingProduct(ShoppingProductModel idShoppingProduct) {
+        this.idShoppingProduct = idShoppingProduct;
     }
 }

@@ -15,6 +15,9 @@ public class ProductsModel {
     @Lob
     private byte[] image;
 
+    @OneToMany(mappedBy = "idShopping")
+    private ShoppingProductModel idShoppingProduct;
+
     // Getters e Setters
 
     public Long getIdProduct() {
@@ -55,5 +58,13 @@ public class ProductsModel {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public ShoppingProductModel getIdShoppingProduct() {
+        return idShoppingProduct;
+    }
+
+    public void setIdShoppingProduct(ShoppingProductModel idShoppingProduct) {
+        this.idShoppingProduct = idShoppingProduct;
     }
 }
