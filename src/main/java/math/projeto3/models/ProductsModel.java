@@ -2,6 +2,8 @@ package math.projeto3.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity(name="products")
 @Table(name="products")
 public class ProductsModel {
@@ -15,8 +17,8 @@ public class ProductsModel {
     @Lob
     private byte[] image;
 
-    @OneToMany(mappedBy = "idShopping")
-    private ShoppingProductModel idShoppingProduct;
+    @OneToMany(mappedBy = "product")
+    private List<ShoppingProductModel> idShoppingProduct;
 
     // Getters e Setters
 
@@ -60,11 +62,11 @@ public class ProductsModel {
         this.image = image;
     }
 
-    public ShoppingProductModel getIdShoppingProduct() {
+    public List<ShoppingProductModel> getIdShoppingProduct() {
         return idShoppingProduct;
     }
 
-    public void setIdShoppingProduct(ShoppingProductModel idShoppingProduct) {
+    public void setIdShoppingProduct(List<ShoppingProductModel> idShoppingProduct) {
         this.idShoppingProduct = idShoppingProduct;
     }
 }

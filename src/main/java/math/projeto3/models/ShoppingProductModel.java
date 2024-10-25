@@ -12,13 +12,13 @@ public class ShoppingProductModel {
 
     @ManyToOne
     @JoinColumn(name = "idShopping")
-    private ShoppingModel idShopping;
+    private ShoppingModel shopping;
 
     @ManyToOne
     @JoinColumn(name = "idProduct")
-    private ProductsModel idProduct;
+    private ProductsModel product;
 
-    private Double quantity;
+    private Integer quantity;
 
     //Getters e Setters
     public Long getIdShoppingProduct() {
@@ -29,20 +29,20 @@ public class ShoppingProductModel {
         this.idShoppingProduct = idShoppingProduct;
     }
 
-    public ShoppingModel getIdShopping() {
-        return idShopping;
+    public ShoppingModel getShopping() {
+        return shopping;
     }
 
-    public void setIdShopping(ShoppingModel idShopping) {
-        this.idShopping = idShopping;
+    public void setShopping(ShoppingModel shopping) {
+        this.shopping = shopping;
     }
 
-    public ProductsModel getIdProduct() {
-        return idProduct;
+    public ProductsModel getProduct() {
+        return product;
     }
 
-    public void setIdProduct(ProductsModel idProduct) {
-        this.idProduct = idProduct;
+    public void setProduct(ProductsModel product) {
+        this.product = product;
     }
 
     public Double getQuantity() {
