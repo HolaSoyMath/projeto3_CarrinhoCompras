@@ -1,25 +1,16 @@
-package math.projeto3.models;
+package math.projeto3.ResponseDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
+import jakarta.persistence.Lob;
 
-import java.util.List;
+public class RegisterProductResponseDTO {
 
-@Entity(name="products")
-@Table(name="products")
-public class ProductsModel {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProduct;
     private String name;
     private String description;
     private Double price;
-    @Lob
+    @Schema(type = "string", format = "byte", description = "Imagem em formato base64")
     private byte[] image;
-
-    @OneToMany(mappedBy = "product")
-    private List<ShoppingProductModel> idShoppingProduct;
 
     // Getters e Setters
 
@@ -61,13 +52,5 @@ public class ProductsModel {
 
     public void setImage(byte[] image) {
         this.image = image;
-    }
-
-    public List<ShoppingProductModel> getIdShoppingProduct() {
-        return idShoppingProduct;
-    }
-
-    public void setIdShoppingProduct(List<ShoppingProductModel> idShoppingProduct) {
-        this.idShoppingProduct = idShoppingProduct;
     }
 }
