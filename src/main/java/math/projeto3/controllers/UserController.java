@@ -7,6 +7,8 @@ import math.projeto3.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -17,11 +19,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(summary = "Cadastrar novo usuário", description = "Cadastrar um novo usuário no sistema", tags = "Usuário")
+    @Operation(
+            summary = "Cadastrar novo usuário",
+            description = "Cadastrar um novo usuário no sistema",
+            tags = "Usuário")
     @PostMapping("/register")
-    public ResponseEntity<NewUserResponseDTO> salvar(@RequestBody NewUserRequestDTO usuarioDTO) {
+    public ResponseEntity<NewUserResponseDTO> salvar(@RequestBody NewUserRequestDTO newUserRequestDTO) {
+        return userService.createUser(newUserRequestDTO);
+    }
 
-        return userService.createUser(usuarioDTO);
-
+    @GetMapping
+    public ResponseEntity<List<NewUserResponseDTO>> getUser() {
+        return userService.getAll();
     }
 }

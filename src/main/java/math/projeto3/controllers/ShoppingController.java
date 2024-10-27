@@ -2,8 +2,11 @@ package math.projeto3.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import math.projeto3.RequestDTO.NewItemShoppingRequestDTO;
+import math.projeto3.RequestDTO.NewShoppingRequestDTO;
 import math.projeto3.ResponseDTO.ShoppingResponseDTO;
 import math.projeto3.service.ShoppingService;
+import org.apache.coyote.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -19,19 +22,19 @@ public class ShoppingController {
     }
 
     @Operation(summary = "Criar carrinho", description = "Criar um novo carrinho de compras para um usuário", tags = "Carrinho")
-    @PostMapping("/criar")
-    public Optional<ShoppingResponseDTO> criar(@RequestParam Long idUser){
+    @PostMapping("/create")
+    public ResponseEntity<ShoppingResponseDTO> create(@RequestBody NewShoppingRequestDTO newShoppingRequestDTO){
 
-        return shoppingService.identifyShopping(idUser);
-
-    }
-
-    @Operation(summary = "Novo item", description = "Adicionar novo item no carrinho do usuário", tags = "Carrinho")
-    @PostMapping("/novoItem")
-    public Optional<ShoppingResponseDTO> novoItem(@RequestBody NewItemShoppingRequestDTO requestDTO){
-
-        return shoppingService.addNewItem(requestDTO);
+        return shoppingService.createShopping(newShoppingRequestDTO);
 
     }
+
+//    @Operation(summary = "Novo item", description = "Adicionar novo item no carrinho do usuário", tags = "Carrinho")
+//    @PostMapping("/novoItem")
+//    public Optional<ShoppingResponseDTO> novoItem(@RequestBody NewItemShoppingRequestDTO requestDTO){
+//
+//        return shoppingService.addNewItem(requestDTO);
+//
+//    }
 
 }

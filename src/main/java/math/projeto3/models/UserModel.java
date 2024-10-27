@@ -18,7 +18,7 @@ public class UserModel {
     @NotBlank(message = "Uma senha deve ser informada")
     private String password;
 
-    @OneToOne(mappedBy = "idUser")
+    @OneToOne(mappedBy = "user")
     private ShoppingModel shopping;
 
     // Getters e Setters

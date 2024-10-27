@@ -3,6 +3,7 @@ package math.projeto3.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name="shopping")
@@ -15,13 +16,13 @@ public class ShoppingModel {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idUser", unique = true)
-    private UserModel idUser;
+    private UserModel user;
 
     private Double total;
 
-    @OneToMany(mappedBy = "shopping")
+    @OneToMany(mappedBy = "shopping", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<ShoppingProductModel> idShoppingProduct;
+    private List<ShoppingProductModel> shoppingProducts = new ArrayList<>();
 
     // Getters e Setter
     public Long getIdShopping() {
@@ -33,11 +34,11 @@ public class ShoppingModel {
     }
 
     public UserModel getIdUser() {
-        return idUser;
+        return user;
     }
 
-    public void setIdUser(UserModel idUser) {
-        this.idUser = idUser;
+    public void setIdUser(UserModel user) {
+        this.user = user;
     }
 
     public Double getTotal() {
@@ -48,11 +49,16 @@ public class ShoppingModel {
         this.total = total;
     }
 
-    public List<ShoppingProductModel> getIdShoppingProduct() {
-        return idShoppingProduct;
+    public List<ShoppingProductModel> getShoppingProducts() {
+        return shoppingProducts;
     }
 
-    public void setIdShoppingProduct(List<ShoppingProductModel> idShoppingProduct) {
-        this.idShoppingProduct = idShoppingProduct;
+    public void setShoppingProducts(List<ShoppingProductModel> shoppingProducts) {
+        this.shoppingProducts = shoppingProducts;
+    }
+
+    public void addShoppingProduct(ShoppingProductModel shoppingProduct) {
+        shoppingProduct.setShopping(this);
+        this.shoppingProducts.add(shoppingProduct);
     }
 }

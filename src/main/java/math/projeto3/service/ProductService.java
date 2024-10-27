@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -24,49 +26,56 @@ public class ProductService {
     }
 
     // Registrar novo produto no sistema
-    public ResponseEntity<NewProductResponseDTO> createProduct(String name, String description, Double price, MultipartFile imageFile) throws IOException {
-
-
-        // Converter o Multipart para byte
-        byte[] imageBytes = imageFile.getBytes();
-
-        // Criar o DTO request de produto
-        NewProductRequestDTO requestDTO = new NewProductRequestDTO();
-        requestDTO.setName(name);
-        requestDTO.setDescription(description);
-        requestDTO.setPrice(price);
-        requestDTO.setImage(imageBytes);
+    public ResponseEntity<NewProductResponseDTO> createProduct(NewProductRequestDTO newProductRequestDTO)
+            throws IOException {
 
         // Verificar se já existe o produto cadastrado
-        if(repository.findByName(requestDTO.getName()).isPresent()){
+        if(repository.findByName(newProductRequestDTO.name()).isPresent()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nome de produto já cadastrado");
         }
 
         // Transformar o DTO em um Model
         ProductsModel productModel = new ProductsModel();
-        productModel.setName(requestDTO.getName());
-        productModel.setDescription(requestDTO.getDescription());
-        productModel.setPrice(requestDTO.getPrice());
-        productModel.setImage(requestDTO.getImage());
+        productModel.setName(newProductRequestDTO.name());
+        productModel.setDescription(newProductRequestDTO.description());
+        productModel.setPrice(newProductRequestDTO.price());
+        if (newProductRequestDTO.image() != null) {
+            productModel.setImage(newProductRequestDTO.image().getBytes());
+        }
 
         // Tentar salvar o novo produto no DB
         try {
             ProductsModel responseModel = repository.save(productModel);
 
             // Transformar de Model para a resposta DTO
-            NewProductResponseDTO responseDTO = new NewProductResponseDTO();
-            responseDTO.setIdProduct(responseModel.getIdProduct());
-            responseDTO.setName(responseModel.getName());
-            responseDTO.setDescription(responseModel.getDescription());
-            responseDTO.setPrice(responseModel.getPrice());
-            responseDTO.setImage(responseModel.getImage());
+            NewProductResponseDTO newProductResponseDTO = new NewProductResponseDTO();
+            newProductResponseDTO.setIdProduct(responseModel.getIdProduct());
+            newProductResponseDTO.setName(responseModel.getName());
+            newProductResponseDTO.setDescription(responseModel.getDescription());
+            newProductResponseDTO.setPrice(responseModel.getPrice());
+            newProductResponseDTO.setImage(responseModel.getImage());
 
-            return ResponseEntity.ok().body(responseDTO);
+            return ResponseEntity.ok().body(newProductResponseDTO);
         } catch (Exception e){
             // Caso não consiga, indica que teve um erro ao salvar o usuário
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao salvar o produto.");
         }
 
+    }
+
+    public ResponseEntity<List<NewProductResponseDTO>> getAll() {
+        List<ProductsModel> productsModels = repository.findAll();
+        List<NewProductResponseDTO> productResponseDTOS = new ArrayList<>();
+        for (ProductsModel productsModel : productsModels) {
+            NewProductResponseDTO newProductResponseDTO = new NewProductResponseDTO();
+            newProductResponseDTO.setIdProduct(productsModel.getIdProduct());
+            newProductResponseDTO.setName(productsModel.getName());
+            newProductResponseDTO.setDescription(productsModel.getDescription());
+            newProductResponseDTO.setPrice(productsModel.getPrice());
+            newProductResponseDTO.setImage(productsModel.getImage());
+            productResponseDTOS.add(newProductResponseDTO);
+        }
+        return ResponseEntity.ok().body(productResponseDTOS);
     }
 
 }

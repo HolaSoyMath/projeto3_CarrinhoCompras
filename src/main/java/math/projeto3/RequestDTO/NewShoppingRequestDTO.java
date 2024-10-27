@@ -1,14 +1,9 @@
 package math.projeto3.RequestDTO;
 
-public class NewShoppingRequestDTO {
-    private Long idUser;
+import math.projeto3.models.ShoppingProductModel;
 
-    //Getter e Setter
-    public Long getIdUser() {
-        return idUser;
-    }
+import java.util.List;
 
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
-    }
+public record NewShoppingRequestDTO(Long idUser, List<NewItemShoppingRequestDTO> shoppingProducts) {
+
 }
