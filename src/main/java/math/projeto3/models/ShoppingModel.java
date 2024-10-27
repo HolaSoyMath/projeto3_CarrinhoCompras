@@ -1,5 +1,6 @@
 package math.projeto3.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ShoppingModel {
     private Double total;
 
     @OneToMany(mappedBy = "shopping")
+    @JsonManagedReference
     private List<ShoppingProductModel> idShoppingProduct;
 
     // Getters e Setter

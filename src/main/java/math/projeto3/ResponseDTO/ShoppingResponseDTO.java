@@ -1,6 +1,7 @@
 package math.projeto3.ResponseDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import math.projeto3.RequestDTO.ProductInfoDTO;
 import math.projeto3.models.ShoppingProductModel;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class ShoppingResponseDTO {
     private Double total;
 
     @Schema(description = "Produtos no carrinho", example = "[]")
-    private List<ShoppingProductModel> products;
+    private List<ProductInfoDTO> products;
 
     //Getter e Setter
     public Long getIdShopping() {

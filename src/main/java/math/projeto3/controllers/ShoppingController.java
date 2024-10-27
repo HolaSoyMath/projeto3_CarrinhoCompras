@@ -1,13 +1,10 @@
 package math.projeto3.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import math.projeto3.RequestDTO.NewItemShoppingRequestDTO;
 import math.projeto3.ResponseDTO.ShoppingResponseDTO;
-import math.projeto3.models.ShoppingModel;
 import math.projeto3.service.ShoppingService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -26,6 +23,14 @@ public class ShoppingController {
     public Optional<ShoppingResponseDTO> criar(@RequestParam Long idUser){
 
         return shoppingService.identifyShopping(idUser);
+
+    }
+
+    @Operation(summary = "Novo item", description = "Adicionar novo item no carrinho do usuário", tags = "Carrinho")
+    @PostMapping("/novoItem")
+    public Optional<ShoppingResponseDTO> novoItem(@RequestBody NewItemShoppingRequestDTO requestDTO){
+
+        return shoppingService.addNewItem(requestDTO);
 
     }
 

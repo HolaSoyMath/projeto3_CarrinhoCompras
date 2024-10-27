@@ -1,10 +1,14 @@
 package math.projeto3.service;
 
+import math.projeto3.RequestDTO.NewItemShoppingRequestDTO;
+import math.projeto3.ResponseDTO.NewProductResponseDTO;
 import math.projeto3.ResponseDTO.ShoppingResponseDTO;
 import math.projeto3.models.ProductsModel;
 import math.projeto3.models.ShoppingModel;
+import math.projeto3.models.ShoppingProductModel;
 import math.projeto3.models.UserModel;
 import math.projeto3.repositories.ProductsRepository;
+import math.projeto3.repositories.ShoppingProductRepository;
 import math.projeto3.repositories.ShoppingRepository;
 import math.projeto3.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -23,15 +28,18 @@ public class ShoppingService {
     private final ShoppingRepository shoppingRepository;
     private final UsersRepository usersRepository;
     private final ProductsRepository productsRepository;
+    private final ShoppingProductRepository shoppingProductRepository;
 
     @Autowired
-    public ShoppingService(ShoppingRepository shoppingRepository, UsersRepository usersRepository, ProductsRepository productsRepository) {
+    public ShoppingService(ShoppingRepository shoppingRepository, UsersRepository usersRepository, ProductsRepository productsRepository, ShoppingProductRepository shoppingProductRepository) {
         this.shoppingRepository = shoppingRepository;
         this.usersRepository = usersRepository;
         this.productsRepository = productsRepository;
+        this.shoppingProductRepository = shoppingProductRepository;
     }
 
-    // Registrar novo item no carrinho
+    // **** Criar ou Verificar se um carrinho existe ****
+    // Identificar/Criar um carrinho
     public Optional<ShoppingResponseDTO> identifyShopping(Long idUser){
 
         // Verificar se existe um carrinho para esse usuário
@@ -85,6 +93,82 @@ public class ShoppingService {
         ShoppingModel shoppingResponseModel = shoppingRepository.save(shoppingModel);
 
         return Optional.of(shoppingResponseModel);
+
+    }
+
+
+    // **** Operações dentro do carrinho ****
+    // Regsitrar novo item
+    public Optional<ShoppingResponseDTO> addNewItem(@RequestBody NewItemShoppingRequestDTO requestDTO) {
+
+        // Localizar o carrinho a partir do IdUser
+        Optional<ShoppingModel> shoppingModel = shoppingRepository.findByIdUser_IdUser(requestDTO.getIdUser());
+        // Se nao tiver carrinho, devolve um erro para o usuário
+        if (shoppingModel.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Carrinho para o usuário não encontrado");
+        }
+
+        // Localizar o produto
+        Optional<ProductsModel> productsModel = productsRepository.findByIdProduct(requestDTO.getIdProduct());
+        // Se nao tiver produto, devolve um erro para o usuário
+        if (productsModel.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Produto não encontrado");
+        }
+
+        // Verificar se tem uma lista de itens no carrinho
+        if (shoppingModel.get().getIdShoppingProduct() == null) {
+            shoppingModel.get().setIdShoppingProduct(new ArrayList<>());
+        }
+
+        // Transformar em um modelo de ShoppingProduct, pois a lista do Model é com essa classe
+        ShoppingProductModel shoppingProduct = transformProduct(shoppingModel.get(), productsModel.get(), requestDTO.getQuantity());
+
+        // Adicionar o produto na lista do carrinho
+        shoppingModel.get().getIdShoppingProduct().add(shoppingProduct);
+
+        // Calcular valor total do carrinho
+        shoppingModel.get().setTotal(somarValores(shoppingModel.get().getIdShoppingProduct()));
+
+        // Salvar o carrinho
+        ShoppingModel savedShoppingModel = shoppingRepository.save(shoppingModel.get());
+
+        // Montar resposta para o usuário
+        ShoppingResponseDTO responseDTO = new ShoppingResponseDTO();
+        responseDTO.setIdShopping(savedShoppingModel.getIdShopping());
+        responseDTO.setIdUser(savedShoppingModel.getIdUser().getIdUser());
+        responseDTO.setProducts(savedShoppingModel.getIdShoppingProduct());
+        responseDTO.setTotal(savedShoppingModel.getTotal());
+
+        // Devolver o DTO do carrinho
+        return Optional.of(responseDTO);
+        }
+
+    private ShoppingProductModel transformProduct(ShoppingModel shopping ,ProductsModel product, Integer quantity){
+
+        ShoppingProductModel response = new ShoppingProductModel();
+
+        response.setShopping(shopping);
+        response.setProduct(product);
+        response.setQuantity(quantity);
+
+        response = shoppingProductRepository.save(response);
+
+        return response;
+
+    }
+
+    private Double somarValores(List<ShoppingProductModel> request){
+
+        Double soma = 0.0;
+
+        for (ShoppingProductModel produto : request){
+            Double valorProd = produto.getProduct().getPrice();
+            Integer quantity = produto.getQuantity();
+
+            soma += valorProd * quantity;
+        }
+
+        return soma;
 
     }
 

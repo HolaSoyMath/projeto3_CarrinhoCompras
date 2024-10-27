@@ -1,5 +1,7 @@
 package math.projeto3.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity(name="shoppingProduct")
@@ -12,6 +14,7 @@ public class ShoppingProductModel {
 
     @ManyToOne
     @JoinColumn(name = "idShopping")
+    @JsonBackReference
     private ShoppingModel shopping;
 
     @ManyToOne

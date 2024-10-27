@@ -3,7 +3,7 @@ package math.projeto3.RequestDTO;
 public class NewItemShoppingRequestDTO {
 
     private Long idUser;
-    private Long idProduto;
+    private Long idProduct;
     private Integer quantity;
 
     //Getters e Setters
@@ -15,12 +15,12 @@ public class NewItemShoppingRequestDTO {
         this.idUser = idUser;
     }
 
-    public Long getIdProduto() {
-        return idProduto;
+    public Long getIdProduct() {
+        return idProduct;
     }
 
-    public void setIdProduto(Long idProduto) {
-        this.idProduto = idProduto;
+    public void setIdProduct(Long idProduto) {
+        this.idProduct = idProduto;
     }
 
     public Integer getQuantity() {
