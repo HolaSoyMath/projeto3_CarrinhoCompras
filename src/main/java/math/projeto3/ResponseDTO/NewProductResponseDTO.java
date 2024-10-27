@@ -1,9 +1,8 @@
 package math.projeto3.ResponseDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Lob;
 
-public class RegisterProductResponseDTO {
+public class NewProductResponseDTO {
 
     private Long idProduct;
     private String name;

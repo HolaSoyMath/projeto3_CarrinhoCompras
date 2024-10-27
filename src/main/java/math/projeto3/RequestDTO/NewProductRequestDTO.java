@@ -2,7 +2,7 @@ package math.projeto3.RequestDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class RegisterProductRequestDTO {
+public class NewProductRequestDTO {
 
     private String name;
     private String description;

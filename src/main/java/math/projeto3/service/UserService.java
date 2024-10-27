@@ -1,7 +1,7 @@
 package math.projeto3.service;
 
-import math.projeto3.RequestDTO.RegisterUserRequestDTO;
-import math.projeto3.ResponseDTO.RegisterUserResponseDTO;
+import math.projeto3.RequestDTO.NewUserRequestDTO;
+import math.projeto3.ResponseDTO.NewUserResponseDTO;
 import math.projeto3.models.UserModel;
 import math.projeto3.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class UserService {
         this.repository = repository;
     }
 
-    public ResponseEntity<RegisterUserResponseDTO> createUser(RegisterUserRequestDTO userDTO) {
+    public ResponseEntity<NewUserResponseDTO> createUser(NewUserRequestDTO userDTO) {
 
         // Verificar se já existe o usuário cadastrado
         if (repository.findByUsername(userDTO.getUsername()).isPresent()) {
@@ -37,7 +37,7 @@ public class UserService {
             UserModel responseModel = repository.save(usuario);
 
             // Transformar o Model em ResponseDTO
-            RegisterUserResponseDTO responseDTO = new RegisterUserResponseDTO();
+            NewUserResponseDTO responseDTO = new NewUserResponseDTO();
             responseDTO.setIdUser(responseModel.getIdUser());
             responseDTO.setUsername(responseModel.getUsername());
 

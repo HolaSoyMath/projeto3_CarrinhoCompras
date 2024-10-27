@@ -1,9 +1,6 @@
 package math.projeto3.RequestDTO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-public class RegisterUserRequestDTO {
+public class NewUserRequestDTO {
 
     private String username;
     private String password;

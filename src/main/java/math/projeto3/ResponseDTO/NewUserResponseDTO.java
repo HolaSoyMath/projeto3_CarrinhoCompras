@@ -1,6 +1,6 @@
 package math.projeto3.ResponseDTO;
 
-public class RegisterUserResponseDTO {
+public class NewUserResponseDTO {
 
     private Long idUser;
     private String username;

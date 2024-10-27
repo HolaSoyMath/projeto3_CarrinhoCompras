@@ -13,7 +13,7 @@ public class ShoppingModel {
     private Long idShopping;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idUser")
+    @JoinColumn(name = "idUser", unique = true)
     private UserModel idUser;
 
     private Double total;

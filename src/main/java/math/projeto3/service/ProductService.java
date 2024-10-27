@@ -1,7 +1,7 @@
 package math.projeto3.service;
 
-import math.projeto3.RequestDTO.RegisterProductRequestDTO;
-import math.projeto3.ResponseDTO.RegisterProductResponseDTO;
+import math.projeto3.RequestDTO.NewProductRequestDTO;
+import math.projeto3.ResponseDTO.NewProductResponseDTO;
 import math.projeto3.models.ProductsModel;
 import math.projeto3.repositories.ProductsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,15 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public ResponseEntity<RegisterProductResponseDTO> createProduct(String name, String description, Double price, MultipartFile imageFile) throws IOException {
+    // Registrar novo produto no sistema
+    public ResponseEntity<NewProductResponseDTO> createProduct(String name, String description, Double price, MultipartFile imageFile) throws IOException {
 
 
         // Converter o Multipart para byte
         byte[] imageBytes = imageFile.getBytes();
 
         // Criar o DTO request de produto
-        RegisterProductRequestDTO requestDTO = new RegisterProductRequestDTO();
+        NewProductRequestDTO requestDTO = new NewProductRequestDTO();
         requestDTO.setName(name);
         requestDTO.setDescription(description);
         requestDTO.setPrice(price);
@@ -53,7 +54,7 @@ public class ProductService {
             ProductsModel responseModel = repository.save(productModel);
 
             // Transformar de Model para a resposta DTO
-            RegisterProductResponseDTO responseDTO = new RegisterProductResponseDTO();
+            NewProductResponseDTO responseDTO = new NewProductResponseDTO();
             responseDTO.setIdProduct(responseModel.getIdProduct());
             responseDTO.setName(responseModel.getName());
             responseDTO.setDescription(responseModel.getDescription());
