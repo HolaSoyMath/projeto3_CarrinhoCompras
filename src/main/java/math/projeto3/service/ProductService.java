@@ -40,7 +40,7 @@ public class ProductService {
         productModel.setDescription(newProductRequestDTO.description());
         productModel.setPrice(newProductRequestDTO.price());
         if (newProductRequestDTO.image() != null) {
-            productModel.setImage(newProductRequestDTO.image().getBytes());
+            productModel.setImage(newProductRequestDTO.image());
         }
 
         // Tentar salvar o novo produto no DB

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import math.projeto3.RequestDTO.NewProductRequestDTO;
 import math.projeto3.ResponseDTO.NewProductResponseDTO;
 import math.projeto3.service.ProductService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,9 +24,13 @@ public class ProductController {
 
     @Operation(summary = "Criar produto", description = "Registrar novo produto no sistema",tags = "Produto")
     @PostMapping(value = "/create")
-    public ResponseEntity<NewProductResponseDTO> criar(@RequestBody NewProductRequestDTO newProductRequestDTO)
-            throws IOException {
+    public ResponseEntity<NewProductResponseDTO> criar(
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("price") Double price,
+            @RequestParam("image") MultipartFile image) throws IOException {
 
+        NewProductRequestDTO newProductRequestDTO = new NewProductRequestDTO(name, description, price, image.getBytes());
         return productService.createProduct(newProductRequestDTO);
     }
 

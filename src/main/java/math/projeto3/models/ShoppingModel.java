@@ -58,6 +58,7 @@ public class ShoppingModel {
     }
 
     public void addShoppingProduct(ShoppingProductModel shoppingProduct) {
+        // Setar o produto no shopping
         shoppingProduct.setShopping(this);
         this.shoppingProducts.add(shoppingProduct);
     }
